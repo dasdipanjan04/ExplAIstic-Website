@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import os
 from pathlib import Path
 
@@ -6,12 +6,8 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
+def load():
     return render_template('example.html')
-
-@app.route('/ImageUpload')
-def image_upload():
-    return 'This is where you will upload your image!!!!'
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -23,9 +19,8 @@ def upload_image():
         # Save the file to the upload folder
         UPLOAD_FOLDER = os.path.join(Path.cwd(), "uploaded")
         file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-
-        # Redirect to a success page
-        return redirect(url_for('success'))
+        success = 'Image uploaded successfully!'
+        return render_template('example.html', success=success)
     else:
         return '''
             <form method="post" enctype="multipart/form-data">
