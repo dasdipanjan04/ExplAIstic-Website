@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fancy Image Uploader</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Include CSS libraries for styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <style>
+      /* Style the page header */
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+      /* Style the form */
+        form {
+            margin: 50px auto;
+            text-align: center;
+        }
+
+      /* Style the image viewer */
+        .image-viewer {
+            display: flex;
+            justify-content: center;
+            margin: 50px auto;
+        }
+
+        .image-viewer img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+      /* Style the caption button */
+        .caption-button {
+            display: block;
+            margin: 50px auto;
+        }
+
+      /* Style the caption text */
+        .caption-text {
+            margin: 50px auto;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Fancy Image Uploader</h1>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="image">Select an image:</label>
+            <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Upload Image</button>
+    </form>
+
+    {% if image_path %}
+    <div class="image-viewer">
+        <a data-fancybox="gallery" href="{{ image_path }}">
+            <img src="{{ image_path }}">
+        </a>
+    </div>
+
+    <button class="btn btn-primary caption-button" onclick="generateCaption()">Generate Image Caption</button>
+
+    <div class="caption-text" id="caption"></div>
+    {% endif %}
+
+    <!-- Include JavaScript libraries for functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script>
+        function generateCaption() {
+            // Get the image file from the input element
+            var file = document.getElementById('image').files[0];
+        
+            // Create a new form data object and append the image file to it
+            var formData = new FormData();
+            formData.append('image', file);
+        
+            // Make an AJAX request to your Flask server to generate the caption
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/generate_caption', true);
+            xhr.onload = function () {
+              // Update the caption element with the generated caption
+              document.getElementById('caption').textContent = xhr.responseText;
+            };
+            xhr.send(formData);
+          }
+    </script>
+</body>
+</html>
