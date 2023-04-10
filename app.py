@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def load():
-    return render_template('example.html')
+    return render_template('index.html')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -20,7 +20,7 @@ def upload_image():
         UPLOAD_FOLDER = os.path.join(Path.cwd(), "uploaded")
         file.save(os.path.join(UPLOAD_FOLDER, file.filename))
         success = 'Image uploaded successfully!'
-        return render_template('example.html', success=success)
+        return render_template('index.html', success=success)
     else:
         return '''
             <form method="post" enctype="multipart/form-data">

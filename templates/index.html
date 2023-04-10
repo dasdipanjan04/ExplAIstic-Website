@@ -1,106 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Fancy Image Uploader</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Include CSS libraries for styling -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
+    <title>Image Upload</title>
     <style>
-      /* Style the page header */
-        .header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-      /* Style the form */
         form {
-            margin: 50px auto;
-            text-align: center;
-        }
-
-      /* Style the image viewer */
-        .image-viewer {
             display: flex;
-            justify-content: center;
-            margin: 50px auto;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .image-viewer img {
-            max-width: 100%;
-            max-height: 100%;
+        input[type="file"] {
+            margin: 20px 0;
         }
 
-      /* Style the caption button */
-        .caption-button {
-            display: block;
-            margin: 50px auto;
+        input[type="submit"] {
+            background-color: #3498db;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-      /* Style the caption text */
-        .caption-text {
-            margin: 50px auto;
-            text-align: center;
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .success {
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 50px;
         }
     </style>
-</head>
-
-<body>
-    <div class="header">
-        <h1>Fancy Image Uploader</h1>
-    </div>
-
-    <form method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="image">Select an image:</label>
-            <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Upload Image</button>
-    </form>
-
-    {% if image_path %}
-    <div class="image-viewer">
-        <a data-fancybox="gallery" href="{{ image_path }}">
-            <img src="{{ image_path }}">
-        </a>
-    </div>
-
-    <button class="btn btn-primary caption-button" onclick="generateCaption()">Generate Image Caption</button>
-
-    <div class="caption-text" id="caption"></div>
-    {% endif %}
-
-    <!-- Include JavaScript libraries for functionality -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
     <script>
-        function generateCaption() {
-            // Get the image file from the input element
-            var file = document.getElementById('image').files[0];
-        
-            // Create a new form data object and append the image file to it
-            var formData = new FormData();
-            formData.append('image', file);
-        
-            // Make an AJAX request to your Flask server to generate the caption
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/generate_caption', true);
-            xhr.onload = function () {
-              // Update the caption element with the generated caption
-              document.getElementById('caption').textContent = xhr.responseText;
-            };
-            xhr.send(formData);
-          }
+        setTimeout(function() {
+            var success = document.querySelector('.success');
+            if (success) {
+                success.style.display = 'none';
+            }
+        }, 10000);
     </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload an Image</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+
+    {% if success %}
+    <div class="container">
+        <div class="success">{{ success }}</div>
+    </div>
+    {% endif %}
 </body>
 </html>
