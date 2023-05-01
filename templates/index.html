@@ -3,14 +3,21 @@
 <head>
     <title>Image Upload</title>
     <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Open Sans', sans-serif;
             background-color: #f5f5f5;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
         }
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
             padding: 50px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -73,7 +80,6 @@
             <input type="submit" value="Upload">
         </form>
     </div>
-
     {% if success %}
     <div class="container">
         <div class="success">{{ success }}</div>
